@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>NASHRAH • pixel portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      image-rendering: crisp-edges;
+      image-rendering: pixelated;
+    }
+
+    body {
+      background: #030518;
+      font-family: 'Press Start 2P', monospace;
+      color: #eef5ff;
+      line-height: 1.5;
+      scroll-behavior: smooth;
+    }
+
+    .pixel-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 20% 30%, #081030, #010008);
+      z-index: -3;
+    }
+
+    .pixel-bg::before {
+      content: "✦ ⋆ ˚｡⋆";
+      font-size: 6px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><circle cx="20" cy="30" r="1.5" fill="%23fff9c4"/><circle cx="150" cy="50" r="2" fill="%23ffe0b3"/><circle cx="80" cy="20" r="1" fill="%23aad0ff"/><circle cx="180" cy="110" r="1.5" fill="%23f9f3c1"/><circle cx="40" cy="140" r="2" fill="%23f9d56e"/><circle cx="110" cy="70" r="1" fill="%23ffe6a3"/></svg>');
+      background-repeat: repeat;
+      opacity: 0.3;
+      pointer-events: none;
+    }
+
+    .city-skyline {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 120px;
+      background: repeating-linear-gradient(90deg, #0e1a2f 0px, #0e1a2f 30px, #15273f 30px, #15273f 60px);
+      clip-path: polygon(0% 100%, 0% 40%, 5% 35%, 10% 45%, 15% 30%, 23% 50%, 30% 28%, 38% 48%, 45% 32%, 52% 47%, 60% 25%, 68% 44%, 75% 35%, 82% 50%, 90% 38%, 95% 48%, 100% 30%, 100% 100%);
+      z-index: -2;
+      border-top: 3px solid #ffdf8c;
+      box-shadow: 0 -5px 0 #2b3b5e;
+    }
+
+    .wrapper {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 5rem;
+    }
+
+    .pixel-card, .skill-chip, .project-category, .gallery-item img {
+      border: 3px solid #6c5ce7;
+      box-shadow: 5px 5px 0 #0a0f2a;
+      background: rgba(8, 15, 40, 0.75);
+      backdrop-filter: blur(2px);
+    }
+
+    .hero-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.55);
+      padding: 2rem;
+      border-radius: 24px;
+      border: 2px solid #4fd1c5;
+      margin-bottom: 3rem;
+    }
+
+    .intro-text {
+      flex: 2;
+    }
+
+    .profile-pixel {
+      flex: 1;
+      text-align: center;
+    }
+
+    .profile-pixel img {
+      width: 100%;
+      max-width: 280px;
+      height: auto;
+      aspect-ratio: 1 / 1;
+      border-radius: 50%;
+      border: 5px solid #f7d44a;
+      object-fit: cover;
+      box-shadow: 8px 8px 0 #2d2a5e;
+      background: #2b2a4e;
+    }
+
+    .typewriter-container {
+      min-height: 4rem;
+    }
+    h1 {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #aaf0ff;
+      text-shadow: 3px 3px 0 #0a1a3a, -1px -1px 0 #0a1a3a, 1px -1px 0 #0a1a3a, -1px 1px 0 #0a1a3a, 1px 1px 0 #0a1a3a;
+      letter-spacing: 2px;
+      background: none;
+      border-right: 3px solid #aaf0ff;
+      display: inline-block;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+
+    @keyframes blink {
+      0%, 100% { border-color: transparent; }
+      50% { border-color: #aaf0ff; }
+    }
+    .typing-cursor {
+      animation: blink 0.8s step-end infinite;
+    }
+
+    .tech-stack {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+
+    .skill-chip {
+      background: #120c2c;
+      padding: 0.5rem 0.8rem;
+      font-size: 0.6rem;
+      border-color: #f4c542;
+      color: #fae669;
+    }
+
+    .btn-pixel {
+      background: #2f2b5c;
+      border: 2px solid #ffdf9c;
+      padding: 0.8rem 1.2rem;
+      margin: 0.4rem 0.6rem 0.4rem 0;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 0.7rem;
+      color: #faf0ca;
+      cursor: pointer;
+      transition: all 0.1s linear;
+    }
+
+    .btn-pixel:hover, .btn-pixel.active {
+      background: #f4b942;
+      color: #0c0a1f;
+      border-color: white;
+      transform: translate(-2px, -2px);
+      box-shadow: 4px 4px 0 #000;
+    }
+
+    .skill-cat-btn {
+      background: #262556;
+      border: 2px solid #b3adf0;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 0.6rem;
+      padding: 0.5rem 1rem;
+      margin: 0.2rem;
+    }
+
+    .skill-panel {
+      background: rgba(0, 0, 0, 0.7);
+      margin-top: 1rem;
+      padding: 1.2rem;
+      border: 2px solid #4fd1c5;
+    }
+
+    .skill-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      margin-top: 1rem;
+    }
+
+    .section-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      margin: 2rem 0 2rem;
+      border-bottom: 2px dashed #4b3b9e;
+      padding-bottom: 1rem;
+    }
+
+    .section {
+      scroll-margin-top: 80px;
+      margin: 3rem 0;
+      background: rgba(5, 10, 30, 0.6);
+      padding: 1.8rem;
+      border-left: 8px solid #53e0d0;
+    }
+
+    h2 {
+      font-size: 1.4rem;
+      color: #ffe2a4;
+      border-left: 6px solid #f6c445;
+      padding-left: 12px;
+      margin-bottom: 1.6rem;
+    }
+
+    .project-categories {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.8rem;
+    }
+
+    .cat-btn {
+      background: #191e3f;
+      border: 2px solid #89d4cf;
+      padding: 0.6rem 1.2rem;
+      font-family: inherit;
+      font-size: 0.7rem;
+      cursor: pointer;
+    }
+
+    .cat-btn.active {
+      background: #f7b42c;
+      color: #0f0b25;
+      border-color: white;
+    }
+
+    .project-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      margin-top: 1rem;
+    }
+
+    .project-card {
+      background: #141a34;
+      border: 2px solid #62cfcf;
+      padding: 1rem;
+      width: 260px;
+      transition: 0.1s;
+    }
+
+    .project-card a {
+      color: #98f0e6;
+      text-decoration: none;
+      word-break: break-all;
+    }
+
+    .gallery-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .gallery-item {
+      width: 180px;
+      text-align: center;
+      background: #00000050;
+      padding: 8px;
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 130px;
+      object-fit: cover;
+      border: 2px solid #ffe0a3;
+    }
+
+    .extra-activity {
+      margin-bottom: 2rem;
+      border-bottom: 1px dashed #8b77df;
+      padding-bottom: 1rem;
+    }
+
+    .social-links {
+      margin-top: 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .social-links a {
+      color: #bcffef;
+      font-size: 1.2rem;
+      transition: 0.1s;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 4rem;
+      font-size: 0.6rem;
+      opacity: 0.7;
+    }
+
+    @media (max-width: 780px) {
+      .hero-grid {
+        flex-direction: column-reverse;
+        text-align: center;
+      }
+      .profile-pixel img {
+        max-width: 160px;
+      }
+      .btn-pixel {
+        font-size: 0.55rem;
+      }
+      h1 {
+        font-size: 1.4rem;
+        white-space: normal;
+        word-break: break-word;
+      }
+      .typewriter-container {
+        white-space: normal;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="pixel-bg"></div>
+<div class="city-skyline"></div>
+
+<div class="wrapper">
+  <div class="hero-grid">
+    <div class="intro-text">
+      <div class="typewriter-container">
+        <h1 id="typewriterName"></h1>
+      </div>
+      <p style="font-size: 0.7rem; margin-top: 12px;"> AI/ML Enthusiast | LLM Projects | Application Development | 3D Games  </p>
+      <div class="tech-stack">
+        <span class="skill-chip">Python</span><span class="skill-chip">Java</span><span class="skill-chip">Kotlin</span>
+        <span class="skill-chip">TensorFlow</span><span class="skill-chip">PyTorch</span><span class="skill-chip">Excel/PowerBI</span>
+        <span class="skill-chip">XML/Kotlin</span><span class="skill-chip">Unity</span><span class="skill-chip">Firebase/MongoDB</span>
+        <span class="skill-chip">VS Code</span><span class="skill-chip">Android Studio</span>
+      </div>
+      <div class="social-links">
+        <a href="https://github.com/nashrah-18" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+        <a href="https://www.linkedin.com/in/nashrah-s-61b96524b" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a>
+        <a href="https://leetcode.com/u/nashrah18/" target="_blank"><i class="fab fa-code"></i> LeetCode</a>
+        <a href="https://www.hackerrank.com/profile/nashrahshaikh6" target="_blank"><i class="fab fa-hackerrank"></i> HackerRank</a>
+        <a href="https://medium.com/@nashrahshaikh6" target="_blank"><i class="fab fa-medium"></i> Medium</a>
+      </div>
+      <div style="margin: 20px 0 10px 0;">
+        <button id="toggleTechSkillsBtn" class="btn-pixel"><i class="fas fa-microchip"></i> 📋 TECHNICAL SKILLS</button>
+        <button id="toggleIdeBtn" class="btn-pixel"><i class="fas fa-code"></i> 🛠️ TECH STACK IDE</button>
+      </div>
+      <div id="skillsPanel" style="display: none;" class="skill-panel">
+        <div style="display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-bottom: 20px;">
+          <button class="skill-cat-btn btn-pixel" data-skill-cat="aiml">🤖 AIML</button>
+          <button class="skill-cat-btn btn-pixel" data-skill-cat="data">📊 DATA ANALYZING</button>
+          <button class="skill-cat-btn btn-pixel" data-skill-cat="appdev">📱 APP DEVELOPMENT</button>
+          <button class="skill-cat-btn btn-pixel" data-skill-cat="gamedev">🎮 3D GAMES</button>
+          <button class="skill-cat-btn btn-pixel" data-skill-cat="other">⚡ OTHER SKILLS</button>
+        </div>
+        <div id="skillsDisplayArea" class="skill-grid"></div>
+      </div>
+      <div id="idePanel" style="display: none;" class="skill-panel">
+        <h3 style="font-size: 0.8rem; color: #f7d44a;">💻 FAMILIAR IDEs & TOOLS</h3>
+        <div id="ideGrid" class="skill-grid"></div>
+      </div>
+      <p style="font-size: 0.65rem; margin-top: 18px;"><i class="fas fa-map-marker-alt"></i> Maharashtra, India | 📞 +91 9321739690 | 📧 nashrahshaikh6@gmail.com</p>
+      <p style="font-size: 0.7rem; margin-top: 12px; background: #04081870; padding: 8px;"> I am looking for opportunities to apply my skills in a real-world setting and contribute to a forward-thinking organization.</p>
+    </div>
+    <div class="profile-pixel">
+      <img src="assets/profile.png" alt="Nashrah profile" id="profileImg">
+    </div>
+  </div>
+
+  <div class="section-nav">
+    <button class="btn-pixel" data-section="projects">📁 PROJECTS</button>
+    <button class="btn-pixel" data-section="education">🎓 EDUCATION</button>
+    <button class="btn-pixel" data-section="experience">💼 EXPERIENCE</button>
+    <button class="btn-pixel" data-section="hobbies">🎨 HOBBIES</button>
+    <button class="btn-pixel" data-section="certificates">📜 CERTIFICATIONS</button>
+    <button class="btn-pixel" data-section="extra">✨ EXTRA CURRICULAR</button>
+    <button class="btn-pixel" data-section="other">🖌️ OTHER SKILLS</button>
+  </div>
+
+  <div id="projects" class="section">
+    <h2>⚙️ PROJECT VAULT</h2>
+    <div class="project-categories">
+      <button class="cat-btn active" data-cat="android">📱 Android</button>
+      <button class="cat-btn" data-cat="aiml">🤖 AI/ML</button>
+      <button class="cat-btn" data-cat="gaming">🎮 Gaming</button>
+      <button class="cat-btn" data-cat="web">🌐 Web & Others</button>
+    </div>
+    <div id="dynamic-projects" class="project-grid"></div>
+  </div>
+
+  <div id="education" class="section">
+    <h2>📖 EDUCATION</h2>
+    <div class="pixel-card" style="padding: 1rem;">
+      <p><strong>🎓 Thakur Institute of Management Studies (TIMSCDR), Mumbai University</strong><br>Master of Computer Applications (MCA) Ongoing | Semester 1: 80% (A Grade)</p>
+      <p style="margin-top: 12px;"><strong>🎓 Regal College of Technology & Management, SNDT University</strong><br>BCA (2025) | SGPA 9.38 (Sem 6) | Graduated 87% (A+ Grade)</p>
+    </div>
+  </div>
+
+  <div id="experience" class="section">
+    <h2>💻 EXPERIENCE</h2>
+    <div class="pixel-card" style="padding: 1rem;">
+      <p><i class="fas fa-laptop-code"></i> <strong>AI/ML Intern — Shell Virtual Internship (Remote)</strong> | July 2025 - Aug 2025<br>➤ Smart Irrigation System (Python, ML, TensorFlow) built predictive model & data pipeline.</p>
+      <p><i class="fab fa-github"></i> Explore more: <a href="https://github.com/nashrah-18/Smart_Irrigation_AICTE_Shell" target="_blank" style="color:#ffd966;">see project</a></p>
+    </div>
+  </div>
+
+  <div id="hobbies" class="section">
+    <h2>🎧 HOBBIES</h2>
+    <div style="margin-bottom: 1.5rem;">
+      <button id="vibeCodingBtn" class="btn-pixel">🎵 VIBE CODING</button>
+      <button id="sculptingBtn" class="btn-pixel">🗿 SCULPTING gallery</button>
+    </div>
+    <div id="vibeCodingArea" style="display: none;">
+      <div class="project-grid" id="vibeProjectsGrid"></div>
+    </div>
+    <div id="sculptingArea" style="display: none;">
+      <div class="gallery-row">
+        <div class="gallery-item">
+          <img src="assets/gallery/sculpt2.png" 
+               alt="sculpt2"
+               onerror="this.onerror=null; console.error('Failed to load: assets/gallery/sculpt2.png'); this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 200 150\'%3E%3Crect width=\'200\' height=\'150\' fill=\'%232b2a45\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'%23ffe3b0\' font-size=\'14\' font-family=\'monospace\'%3E⚠️ sculpt2.png missing%3C/text%3E%3C/svg%3E'">
+          <span>✦ Abstract clay pin holder</span>
+        </div>
+        <div class="gallery-item">
+          <img src="assets/gallery/sculpt1.png" 
+               alt="sculpt1"
+               onerror="this.onerror=null; console.error('Failed to load: assets/gallery/sculpt1.png'); this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 200 150\'%3E%3Crect width=\'200\' height=\'150\' fill=\'%232b2a45\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'%23ffe3b0\' font-size=\'14\' font-family=\'monospace\'%3E⚠️ sculpt1.png missing%3C/text%3E%3C/svg%3E'">
+          <span>✦ Cat figurine</span>
+        </div>
+      </div>
+      <p class="skill-chip" style="margin-top: 8px;">and few more!</p>
+    </div>
+  </div>
+
+  <div id="certificates" class="section">
+    <h2>🏅 CERTIFICATIONS</h2>
+    <div id="certGallery" class="project-grid" style="justify-content: flex-start;"></div>
+  </div>
+
+  <div id="extra" class="section">
+    <h2>🌟 EXTRA CURRICULAR ACTIVITIES</h2>
+    <div id="extraActivitiesList"></div>
+  </div>
+
+  <div id="other" class="section">
+    <h2>🎨 OTHER SKILLS & CREATIVE</h2>
+    <div id="otherSkillsList" class="project-grid"></div>
+    <p class="skill-chip" style="margin-top: 12px;"> familiar with LLMs vibe - coded experiments. </p>
+  </div>
+
+  <footer>
+    <i class="fas fa-cat"></i> Nashrah Shaikh portfolio • +91 9321739690 • nashrahshaikh6@gmail.com
+  </footer>
+</div>
+
+<script>
+  // Typewriter
+  const fullName = "NASHRAH SHAIKH";
+  const nameElement = document.getElementById('typewriterName');
+  let i = 0;
+  function typeWriter() {
+    if (i < fullName.length) {
+      nameElement.innerHTML += fullName.charAt(i);
+      i++;
+      setTimeout(typeWriter, 120);
+    } else {
+      nameElement.classList.add('typing-cursor');
+    }
+  }
+  typeWriter();
+
+  // Active nav buttons
+  const navButtons = document.querySelectorAll('.section-nav .btn-pixel');
+  function setActiveNavButton(activeBtn) {
+    navButtons.forEach(btn => btn.classList.remove('active'));
+    activeBtn.classList.add('active');
+  }
+  navButtons.forEach(btn => {
+    btn.addEventListener('click', function(e) {
+      setActiveNavButton(this);
+      const sectionId = this.getAttribute('data-section');
+      const targetSection = document.getElementById(sectionId);
+      if(targetSection) targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+
+  // Skills data (unchanged)
+  const allTechnicalSkills = [ "Kotlin", "XML", "Python", "Prompt Engineering", "Designing", "Creative", "Problem Solving", "Team Work", "Use of AI Tools", "Cloud Databases", "Presentations", "Animations", "LLM", "AI/ML", "Data Visualization", "Text, Image, Sentiment Analysis", "RAG", "Tensor Flow", "Computer Vision", "Image Processing", "Video Analysis", "Image Classification", "Segmentation", "CNN", "Machine Learning", "Deep Learning", "Keras", "Pytorch", "Data Annotation", "Model Evaluation", "Data Preprocessing", "NumPy", "Pandas", "Analytical Thinking", "Creativity", "Streamlit", "Matplotlib", "Java", "C#", "Unity 3D" ];
+  const ideList = [ "Android Studio", "Google Colab", "Hugging Face", "Jupyter Notebooks", "Firebase", "MongoDB", "SQL Workbench", "Kaggle", "VS Code", "GIMP", "Canva", "Power Point", "Excel sheets", "Visual Studio" ];
+  const aimlSkills = ["Prompt Engineering", "Use of AI Tools", "LLM", "AI/ML", "RAG", "Tensor Flow", "Computer Vision", "Image Processing", "Video Analysis", "Image Classification", "Segmentation", "CNN", "Machine Learning", "Deep Learning", "Keras", "Pytorch", "Data Annotation", "Model Evaluation", "Data Preprocessing", "NumPy", "Pandas", "Streamlit", "Matplotlib", "Text, Image, Sentiment Analysis"];
+  const dataAnalyzingSkills = ["Data Visualization", "Analytical Thinking", "NumPy", "Pandas", "Excel sheets", "Data Preprocessing", "Model Evaluation"];
+  const appDevSkills = ["Kotlin", "XML", "Python", "Java", "Cloud Databases", "Firebase", "MongoDB", "SQL Workbench"];
+  const gameDevSkills = ["C#", "Unity 3D", "Designing", "Creative", "Animations", "3D Modeling Concepts"];
+  let otherSkills = ["Presentations", "Team Work", "Analytical Thinking", "Creativity", "Problem Solving", "Designing","Use of AI Tools"];
+  const allCategorized = new Set([...aimlSkills, ...dataAnalyzingSkills, ...appDevSkills, ...gameDevSkills, ...otherSkills]);
+  const missingSkills = allTechnicalSkills.filter(skill => !allCategorized.has(skill));
+  missingSkills.forEach(s => otherSkills.push(s));
+
+  function renderSkillCategory(category) {
+    const container = document.getElementById('skillsDisplayArea');
+    let skillsArray = [];
+    if (category === 'aiml') skillsArray = [...new Set(aimlSkills)];
+    else if (category === 'data') skillsArray = [...new Set(dataAnalyzingSkills)];
+    else if (category === 'appdev') skillsArray = [...new Set(appDevSkills)];
+    else if (category === 'gamedev') skillsArray = [...new Set(gameDevSkills)];
+    else skillsArray = [...new Set(otherSkills)];
+    container.innerHTML = skillsArray.map(skill => `<span class="skill-chip" style="font-size:0.55rem;">⚡ ${skill}</span>`).join('');
+    if(skillsArray.length === 0) container.innerHTML = '<span class="skill-chip">✨ No skills listed</span>';
+  }
+
+  function renderIdePanel() {
+    const ideContainer = document.getElementById('ideGrid');
+    if(ideContainer) ideContainer.innerHTML = ideList.map(ide => `<span class="skill-chip" style="background:#21214a;">🖥️ ${ide}</span>`).join('');
+  }
+
+  const techBtn = document.getElementById('toggleTechSkillsBtn');
+  const ideBtn = document.getElementById('toggleIdeBtn');
+  const skillsPanelDiv = document.getElementById('skillsPanel');
+  const idePanelDiv = document.getElementById('idePanel');
+
+  techBtn.addEventListener('click', () => {
+    if (skillsPanelDiv.style.display === 'none' || skillsPanelDiv.style.display === '') {
+      skillsPanelDiv.style.display = 'block';
+      idePanelDiv.style.display = 'none';
+      renderSkillCategory('aiml');
+    } else {
+      skillsPanelDiv.style.display = 'none';
+    }
+  });
+  ideBtn.addEventListener('click', () => {
+    if (idePanelDiv.style.display === 'none' || idePanelDiv.style.display === '') {
+      idePanelDiv.style.display = 'block';
+      skillsPanelDiv.style.display = 'none';
+      renderIdePanel();
+    } else {
+      idePanelDiv.style.display = 'none';
+    }
+  });
+
+  document.querySelectorAll('[data-skill-cat]').forEach(btn => {
+    btn.addEventListener('click', (e) => renderSkillCategory(btn.getAttribute('data-skill-cat')));
+  });
+
+  // Projects
+  const projectsData = {
+    android: [
+      { name: "Sudoku Game App", desc: "Classic Sudoku game with hints & timer.", link: "https://github.com/nashrah-18/Sudoku-Game" },
+      { name: "7 Minute Workout", desc: "Fitness app with timer, exercise guides.", link: "https://github.com/nashrah-18/7-Minute-Workout-App" },
+      { name: "Project Management App", desc: "Final year project - 2nd prize winner!", link: "https://github.com/nashrah-18/Porjemanag-A-project-management-application" }
+    ],
+    aiml: [
+      { name: "Smart Irrigation System", desc: "ML model predicting soil moisture. Shell internship.", link: "https://github.com/nashrah-18/Smart_Irrigation_AICTE_Shell" },
+      { name: "Custom LLM Chatbot", desc: "Fine-tuned model + RAG integration.", link: "https://github.com/nashrah-18/YourIndianTranslatorv1" },
+      { name: "Translation Dataset", desc: "Built translation dataset from scratch.", link: "#" }
+    ],
+    gaming: [ { name: "Upcoming..", desc: "Learning Unity 3D game development.", link: "https://github.com/nashrah-18" } ],
+    web: [
+      { name: "BrandTracker (Node/React)", desc: "Social brand monitor, ethical shopping.", link: "https://github.com/nashrah-18/BrandTracker" },
+      { name: "ASP.NET Portfolio", desc: "Classic ASP.NET portfolio.", link: "https://github.com/nashrah-18/NashrahPortfolio" }
+    ]
+  };
+
+  function renderProjects(category) {
+    const container = document.getElementById('dynamic-projects');
+    const projs = projectsData[category] || [];
+    if(!projs.length) { container.innerHTML = '<p>📭 No projects in this category yet.</p>'; return; }
+    container.innerHTML = projs.map(p => `<div class="project-card"><strong>${p.name}</strong><p style="font-size:0.6rem; margin:8px 0;">${p.desc}</p><a href="${p.link}" target="_blank">🔗 GitHub repo →</a></div>`).join('');
+  }
+
+  const vibeRepos = [
+    { name: "Horror Happy Birthday Game", desc: "A spooky birthday experience", link: "https://github.com/nashrah-18/Horror-Birthday-Game" },
+    { name: "Pandas 3D Game", desc: "3D maze with pandas", link: "https://github.com/nashrah-18/3D_Ball_Maze_Game_" }
+  ];
+  function renderVibeProjects() {
+    const grid = document.getElementById('vibeProjectsGrid');
+    if(grid) grid.innerHTML = vibeRepos.map(r => `<div class="project-card" style="width:240px;"><strong>${r.name}</strong><p style="font-size:0.55rem;">${r.desc}</p><a href="${r.link}" target="_blank">Link</a></div>`).join('');
+  }
+
+  const certList = [
+    { name: "Dsci Achievement Certificate", desc: "Employment Express Mumbai Advanced Cyber Skill Centre (Feb)" },
+    { name: "Generative AI (Guvi)", desc: "GenAI fundamentals & prompt design" },
+    { name: "Python Basics (Guvi)", desc: "Certified Python programmer" },
+    { name: "Prompt Engineering (MTF)", desc: "Advanced prompt crafting & LLM" },
+    { name: "Network Administration (Chetna)", desc: "Chetna certification" },
+    { name: "Hardware Engineering Study Guide (Chetna)", desc: "Hardware engineering fundamentals" }
+  ];
+  function renderCerts() {
+    const container = document.getElementById('certGallery');
+    if(container) container.innerHTML = certList.map(c => `<div class="project-card" style="width:260px; background:#141a34; border-color:#f5cd5d;"><strong>📜 ${c.name}</strong><p style="font-size:0.55rem; margin-top:8px;">${c.desc}</p></div>`).join('');
+  }
+
+  const extraActivitiesTextOnly = [
+    "🎓 Student Council Member @ TIMSCDR – Active participation in academic committees.",
+    "🤝 Volunteering at NASSCOM – Assisted in tech summits.",
+    "👗 Fashion Show Participant – Creative costume design & ramp walk.",
+    "🏆 Coding contests – finalist at Synapse, Bachelor's project won 2nd prize.",
+    "🤝 Placement committee Member – Managed campus drives.",
+    "📚 Workshops & Seminars – Attended AI/ML, Data science, Cloud workshops.",
+    "🌿 DLLE Social Activities: Teaching & Trekking – Taught underprivileged students + trekking."
+  ];
+  function renderExtraCurricular() {
+    const container = document.getElementById('extraActivitiesList');
+    if(container) container.innerHTML = extraActivitiesTextOnly.map(act => `<div class="extra-activity"><p style="font-size:0.7rem; line-height:1.5;">✨ ${act}</p></div>`).join('');
+  }
+
+  const otherSkillsList = [
+    "🖌️ Digital Artwork – Pixel illustrations, concept arts, character design.",
+    "🎬 Editing / Animation – After Effects, short motion clips.",
+    "📊 Excel / PowerBI dashboards – Data analysis & interactive reports."
+  ];
+  function renderOtherSkills() {
+    const container = document.getElementById('otherSkillsList');
+    if(container) container.innerHTML = otherSkillsList.map(skill => { const [title, desc] = skill.split('–'); return `<div class="project-card" style="background:#141a34; border:2px solid #62cfcf;"><strong>${title}</strong><p style="font-size:0.6rem; margin-top:8px;">${desc}</p></div>`; }).join('');
+  }
+
+  function setupCatButtons() {
+    document.querySelectorAll('.cat-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderProjects(btn.getAttribute('data-cat'));
+      });
+    });
+  }
+
+  function setupHobbies() {
+    const vibeBtn = document.getElementById('vibeCodingBtn');
+    const sculptBtn = document.getElementById('sculptingBtn');
+    const vibeDiv = document.getElementById('vibeCodingArea');
+    const sculptDiv = document.getElementById('sculptingArea');
+    vibeBtn.addEventListener('click', () => { vibeDiv.style.display = 'block'; sculptDiv.style.display = 'none'; renderVibeProjects(); });
+    sculptBtn.addEventListener('click', () => { vibeDiv.style.display = 'none'; sculptDiv.style.display = 'block'; });
+    vibeDiv.style.display = 'none';
+    sculptDiv.style.display = 'none';
+  }
+
+  function init() {
+    renderProjects('android');
+    renderCerts();
+    renderExtraCurricular();
+    renderOtherSkills();
+    setupCatButtons();
+    setupHobbies();
+    renderVibeProjects();
+    renderIdePanel();
+  }
+  init();
+</script>
+</body>
+</html>
